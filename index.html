@@ -1,0 +1,51 @@
+INDEX HTML
+<!--
+<form action="/next" method="POST">
+
+  <input type="submit"  value="NEXT"/>
+</form>
+-->
+
+<html>
+    <head>
+        <title>RoutingDemo App</title>
+    </head>
+    <body ng-app='routingDemoApp'>
+      
+        <h2>AngularJS Routing Application</h2>
+        <ul>
+            <li><a href="#/">Default Route</a></li>
+            <li><a href="#/route/1?name=crap&age=33">route with params and query string</a></li>
+            <li><a href="#/blabla">Unknown Route</a></li>
+			<form action="/route" method="POST">
+
+  <input type="submit"  value="NEXT"/>
+</form>
+        </ul>
+          
+        <div ng-view></div>
+        <script src="libs/angular.min.js"></script>
+        <script src="libs/angular-route.min.js"></script>
+        <script>
+            angular.module('routingDemoApp',['ngRoute'])
+            .config(['$routeProvider', function($routeProvider){
+                $routeProvider
+                .when('/',{template:'This is the default Route'})
+                .when('/route/:id',
+                    {
+                        template:'Referred item is {{ctrl.id}}' + ' and passed query-string values are {{ctrl.qStrName}} , {{ctrl.qStrAge}}',
+                        controller: ['$routeParams', function($routeParams) {
+                            var self=this;
+                            self.id = $routeParams.id;
+                            self.qStrName = $routeParams.name;
+                            self.qStrAge = $routeParams.age;
+                        }],
+                        controllerAs: 'ctrl'
+                    })
+                .otherwise({redirectTo:'/'});
+            }]);
+        </script>
+    </body>
+</html>
+
+	
